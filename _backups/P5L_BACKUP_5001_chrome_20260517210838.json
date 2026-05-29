@@ -1,0 +1,295 @@
+{
+  "version": "1.8.1",
+  "revision": 61,
+  "structure": [],
+  "count": {
+    "sketches": 0,
+    "folders": 0
+  },
+  "settings": {
+    "doctype": "P5L_SETTINGS",
+    "date": "20260517210838",
+    "settings": {
+      "version": "1.8.1",
+      "revision": 61,
+      "welcome": false,
+      "autoCompile": true,
+      "compileTimer": 500,
+      "ecoRender": true,
+      "canvasCursor": true,
+      "console": true,
+      "consoleMode": "auto",
+      "fullscreenMode": false,
+      "fileName": "new",
+      "menuMode": true,
+      "menutab": true,
+      "exportCode": true,
+      "notifyToggle": true,
+      "tippyToggle": true,
+      "multitabToggle": true,
+      "timestampToggle": true,
+      "cocodingAutosaveToggle": true,
+      "cocodingFlagsToggle": false,
+      "checkupdates": true,
+      "debugMode": false,
+      "editMode": true,
+      "safeMode": false,
+      "shortcuts": {
+        "softcompile": {
+          "name": "SoftCompile",
+          "key": "ctrl+enter",
+          "callback": "recompileKey()"
+        },
+        "hardcompile": {
+          "name": "HardCompile",
+          "key": "ctrl+shift+enter",
+          "callback": "recompile(true)"
+        },
+        "editor": {
+          "name": "Editor",
+          "key": "ctrl+e",
+          "callback": "editorToggle()"
+        },
+        "menu": {
+          "name": "Menu",
+          "key": "ctrl+m",
+          "callback": "menuToggle()"
+        },
+        "settings": {
+          "name": "Settings",
+          "key": "ctrl+,",
+          "callback": "showSettings(true)"
+        },
+        "snippets": {
+          "name": "Snippets",
+          "key": "ctrl+shift+s",
+          "callback": "snippetsApplyToggle()"
+        },
+        "snippets_edit": {
+          "name": "Snippets Editor",
+          "key": "alt+shift+s",
+          "callback": "snippetsToggle()"
+        },
+        "references": {
+          "name": "References",
+          "key": "ctrl+r",
+          "callback": "toggleRef()"
+        },
+        "chalkboard": {
+          "name": "Chalkboard",
+          "key": "ctrl+b",
+          "callback": "toggleChalkboard()"
+        },
+        "autocompile": {
+          "name": "Live-Coding Toggle",
+          "key": "ctrl+a",
+          "callback": "autoCompileToggle()"
+        },
+        "newsketch": {
+          "name": "New Sketch",
+          "key": "ctrl+n",
+          "callback": "loadDefault()"
+        },
+        "clonesketch": {
+          "name": "Clone Sketch",
+          "key": "ctrl+shift+c",
+          "callback": "cloneSketch()"
+        },
+        "tidy": {
+          "name": "Tidy Code",
+          "key": "ctrl+t",
+          "callback": "tidyCode(editor)"
+        },
+        "codecomment": {
+          "name": "Comment Code",
+          "key": "meta+/",
+          "init": "editor.commands.bindKey(settings.shortcuts[\"codecomment\"].key, \"togglecomment\")"
+        },
+        "fontbigger": {
+          "name": "Increase Fontsize",
+          "key": "ctrl+=",
+          "callback": "fontSizeAdjust(0.25)"
+        },
+        "fontsmaller": {
+          "name": "Decrease Fontsize",
+          "key": "ctrl+-",
+          "callback": "fontSizeAdjust(- 0.25)"
+        },
+        "pause": {
+          "name": "Pause",
+          "key": "ctrl+p",
+          "callback": "pauseSketch()"
+        },
+        "snapshot": {
+          "name": "Export Snapshot",
+          "key": "ctrl+s",
+          "callback": "savePNG()"
+        },
+        "import": {
+          "name": "Import Sketch",
+          "key": "ctrl+o",
+          "callback": "importSketchesDialog()"
+        },
+        "jump": {
+          "name": "Quick Sketch Jump",
+          "key": "ctrl",
+          "init": "setupJumpSketches(settings.shortcuts[\"jump\"].key)",
+          "tippy": "Then combine w/ 1, 2,...0 to jump thru sketches"
+        },
+        "audio": {
+          "name": "Audio Snippet",
+          "key": "ctrl+shift+a",
+          "callback": "snippetsApplySelect('demo-audio');snippetsApply()",
+          "fixed": false
+        },
+        "osc": {
+          "name": "OSC Snippet",
+          "key": "ctrl+shift+o",
+          "callback": "snippetsApplySelect('demo-osc');snippetsApply()",
+          "fixed": false
+        },
+        "filter": {
+          "name": "Filter Sketches",
+          "key": "ctrl+shift+f",
+          "callback": "filterSketchesFocus()"
+        }
+      },
+      "editor": {
+        "fontSize": 15,
+        "keybinding": "keybinding",
+        "linenumbers": true,
+        "autocomplete": false,
+        "lockcode": true,
+        "passEditorKeys": false,
+        "recompilepulse": true
+      },
+      "snippets": {
+        "demo": {
+          "new": {
+            "gt": "",
+            "s": "",
+            "dt": "",
+            "db": "",
+            "gb": "",
+            "demo": "true"
+          },
+          "audio": {
+            "gt": "",
+            "s": "setupAudio(true) // global vars\n// a5.ease = .075 // set easing",
+            "dt": "/* audio vars: amp, ampEase, fft, fftEase, waveform, waveformEase */\nupdateAudio()",
+            "db": "",
+            "gb": "",
+            "demo": "true"
+          },
+          "font": {
+            "gt": "let font\n\nfunction preload() {\n\tfont = loadFont(\"includes/demos-data/fonts/RobotoMono-Regular.otf\")\n}",
+            "s": "textFont(font)",
+            "dt": "",
+            "db": "",
+            "gb": "",
+            "demo": "true"
+          },
+          "osc": {
+            "gt": "let libs = [\"includes/js/socket.io.js\"];\nlet socket;",
+            "s": "setupOsc('127.0.0.1', 12000, 12001); // oscHost, oscPortIn, oscPortOut",
+            "dt": "",
+            "db": "",
+            "gb": "\n// OSC LOGIC \nfunction receiveOsc(address, value) {\n\t// print('in: ' + address + ', ' +value)\n}\n\nfunction sendOsc(address, value) {\n\tif(socket != undefined) {\n\t\tsocket.emit('message', [address].concat(value));\n\t}\n}\n\nfunction setupOsc(oscHost, oscPortIn, oscPortOut) {\n\tsocket = io.connect('http://127.0.0.1:8082');\n\tsocket.on('connect', function() {\n\t\tsocket.emit('config', {\n\t\t\tserver: {\n\t\t\t\thost: oscHost,\n\t\t\t\tport: oscPortIn\n\t\t\t},\n\t\t\tclient: {\n\t\t\t\thost: oscHost,\n\t\t\t\tport: oscPortOut\n\t\t\t}\n\t\t});\n\t\tprint('OSC Ready!\\n' + oscHost + ', listen: ' + oscPortIn + ', send: ' + oscPortOut);\n\t});\n\tsocket.on('message', function(msg) {\n\t\treceiveOsc(msg[0], msg.splice(1));\n\t});\n}",
+            "demo": "true"
+          },
+          "midi": {
+            "gt": "",
+            "s": "// setup MIDI in/out by ID # or \"name\" (see console.log)\nsetupMidi(0, 0, true) // in, out, globalvars (if false use: midi5. )\n// midi5.debug = ['note', 'controlchange'] // send to console",
+            "dt": "/* vars: note, cc, notes[], ccs[], channels[], */\nupdateMidi()\n",
+            "db": "",
+            "gb": ""
+          }
+        },
+        "user": {}
+      },
+      "snippetsghostmode": {
+        "active": false,
+        "delay": 15
+      },
+      "sonicode": {
+        "mode": "sine",
+        "poly": 1,
+        "active": false,
+        "sonicodePoly": 0,
+        "base": 3
+      },
+      "statscount": 0,
+      "syncdata": {
+        "sketches": [],
+        "code": "",
+        "active": false,
+        "libs": [],
+        "cursor": {
+          "row": 0,
+          "column": 0
+        },
+        "console": [],
+        "namespace": "",
+        "cocodeadded": false
+      },
+      "cocoding": {
+        "active": false,
+        "timestamp": null,
+        "nick": "",
+        "namespace": "",
+        "lockdown": false,
+        "level": "",
+        "token": 0,
+        "sync": false,
+        "request": false,
+        "writemode": false,
+        "color": "#00aa00",
+        "cursor": {
+          "row": 0,
+          "column": 0
+        },
+        "msgID": -1,
+        "hasAdmin": false,
+        "error": false,
+        "code": ""
+      },
+      "scripts": [
+        "includes/p5/p5.min.js",
+        "includes/p5/addons/p5.sound.min.js"
+      ],
+      "theme": "ace/theme/gob",
+      "themeBG": "#00323FE0",
+      "themeBGactive": true,
+      "themeCOLORactive": true,
+      "themeCOLOR": "#B2F7DB",
+      "themeACTIVEactive": true,
+      "themeACTIVE": "#11EED830",
+      "refresh": false,
+      "chalkboard": {
+        "backgroundColor": "#00280A",
+        "backgroundOpacity": 0.75,
+        "strokeColor": "#ffffff",
+        "strokeWeight": 10,
+        "strokeOpacity": 1
+      },
+      "backup": {
+        "frequency": 2,
+        "last": 0
+      },
+      "indexDB": false,
+      "autocomplete": false,
+      "linenumbers": true,
+      "recompilepulse": true,
+      "lockcode": true,
+      "notifytoggle": true,
+      "tippytoggle": true,
+      "multitabtoggle": true,
+      "timestamptoggle": true,
+      "cocodingautosavetoggle": true,
+      "cocodingflagstoggle": false,
+      "passeditorkeys": false,
+      "snippetsghostmode.active": false,
+      "sonicode.active": false
+    }
+  }
+}
