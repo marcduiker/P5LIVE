@@ -1,0 +1,326 @@
+{
+  "version": "1.8.1",
+  "revision": 61,
+  "structure": [
+    {
+      "type": "sketch",
+      "name": "new_001",
+      "mod": 1780176748341,
+      "code": "let t;\nlet res;\nlet fps;\nlet cycle;\nfunction setup() {\n\tcreateCanvas(windowWidth, windowHeight)\n\tt = 0;\n\tcycle = 0;\n\tres = 5;\n\tfps = 15;\n}\n\nfunction draw() {\n\tbackground(0, 10);\n\tif(t === 0) {\n\t\tbeginShape();\n\t}\n\t\n\tlet amp;\n\tlet ampDelta;\n\tif (cycle % 2 === 0) {\n\t\tampDelta = sin(t/fps/2) * 100 + 20;\n\t\tamp = sin(t/fps) * ampDelta + windowHeight / 2;\n\t} else if (cycle % 3 === 0) {\n\t\tampDelta = sin(t/fps/2) * 100 + 20;\n\t\tamp = cos(t/fps) * ampDelta + windowHeight / 2;\n\t} else {\n\t\tampDelta = cos(t/fps/2) * 100 + 20;\n\t\tamp = cos(t/fps) * ampDelta + windowHeight / 2;\n\t}\n\tstrokeWeight(10);\n\tnoFill();\n\tstroke(250, 0, 0);\n\tpoint(t, amp);\n\tstrokeWeight(0.5);\n\tstroke(250);\n\tcurveVertex(t, amp);\n\tendShape();\n\tt+=res;\n\tif (t > windowWidth) {\n\t\tt=0;\n\t\tcycle+=1;\n\t}\n}"
+    },
+    {
+      "name": "2026-05-25-moving-lines_001",
+      "mod": "1779724065510",
+      "type": "sketch",
+      "code": "let nr = 10;\nlet objItems = [];\nlet lineMin = 50;\nlet lineMax = 250;\n\nfunction setup() {\n\tcreateCanvas(windowWidth, windowHeight)\n\tframeRate(30);\n\tfor(let i = 0; i < nr; i++) {\n\t\tobjItems.push(new LineObj(i));\n\t}\n}\n\n function resizeArray(newNr) {\n      while (objItems.length < newNr) objItems.push(new LineObj(objItems.length));\n      while (objItems.length > newNr) objItems.pop();\n      nr = newNr;\n  }\n\nfunction mouseMoved() {\n\tlet newNr = Math.floor(map(mouseX, 0, windowWidth, 2, 100));\n\tconsole.log(newNr);\n\tresizeArray(newNr);\n\treturn false;\n}\n\nfunction draw() {\n\tbackground(0, 10);\n\tstroke(255);\n\tstrokeWeight(5);\n\n\tbeginShape();\n\tfor (let i = 0;i < objItems.length;i++) {\n\t\tobj = objItems[i];\n\t\tobj.update();\n\t\tobj.draw();\n\t\tstroke(color(255, 0, 0, 200));\n\t\tstrokeWeight(0.5);\n\t\tnoFill();\n\t\tvertex(obj.x+obj.w, obj.y)\n\t}\n\tendShape();\n}\n\nclass LineObj {\n\tconstructor(i) {\n\t\tthis.reset(i);\n\t}\n\n\treset(i, gen, x, y) {\n\t\tthis.i = i;\n\t\tthis.y = random(0, windowHeight);\n\t\tthis.w = random(lineMin, lineMax);\n\t\tthis.x = x != null ? x -this.w : -this.w;\n\t\tthis.direction = random([-1,1]);\n\t\tthis.deltaX = map(this.w, lineMin, lineMax, 1, 10);\n\t\tthis.thickness = map(this.w, lineMin, lineMax, 0.5, 25);\n\t\t\n\t}\n\n\tupdate() {\n\t\tthis.x += this.deltaX;\n\t\tif((this.x + this.w) > (windowWidth + this.w)) {\n\t\t\tthis.reset(this.i);\n\t\t}\n\t}\n\n\tdraw() {\n\t\tstroke(255, 200);\n\t\tnoFill();\n\t\tstrokeWeight(this.thickness);\n\t\tline(this.x, this.y, this.x + this.w, this.y);\n\t\tnoStroke();\n\t\tfill(color(255, 0, 0, 255));\n\t\tcircle(this.x+this.w, this.y, this.thickness);\n\t}\n}\t\t\t\t\t\t"
+    },
+    {
+      "name": "2026-05-29-rotating-circles",
+      "mod": "1780085662806",
+      "type": "sketch",
+      "code": "let radius = 200;\nconst fps = 60;\nlet randOffset = 0;\n\nfunction setup() {\n\tcreateCanvas(windowWidth, windowHeight)\n}\n\nfunction draw() {\n\tradius = cos(frameCount/fps/4) * 300;\n\tbackground(10, 5);\n\tpush();\n\ttranslate(windowWidth/2, windowHeight/2);\n\trotate(sin(frameCount/fps) + frameCount/fps/6);\n\tlet circle1 = drawCircle(1, 0, 0, radius, 1, 200, 1);\n\tlet circle2 = drawCircle(2, circle1.x, circle1.y, radius/2, 2, 230, -1);\n\tlet circle3 = drawCircle(3, circle2.x, circle2.y, radius/4, 4, 240, 1);\n\tpop();\n}\n\nfunction drawCircle(gen, cx, cy, orbitR, speed, color, sign) {\n      let angle = (frameCount / fps) * speed;\n      let x = cx + sin(angle) * orbitR;\n      let y = cy + cos(angle) * orbitR;\n\n      noFill();\n      \n      let rndX = random(-randOffset, randOffset) * orbitR/10;\n      let rndY = random(-randOffset, randOffset) * orbitR/10;\n      if (gen === 1) {\n    \tstrokeWeight(1);\n    \tstroke(color);\n    \tcircle(x+rndX, y+rndY, sin(frameCount/fps) * orbitR);\n    \tstroke(250, 0, 0);\n    \tstrokeWeight(3);\n    \tpoint(x+rndX, y+rndY);\n      } else if (gen === 2) {\n    \tstrokeWeight(0.75);\n    \tstroke(color);\n    \tcircle(x+rndX, y+rndY, cos(frameCount/fps) * orbitR);\n    \tstroke(0, 200, 0);\n    \tstrokeWeight(3);\n    \tpoint(x+rndX, y+rndY);\n      } else if (gen === 3) {\n      \tstrokeWeight(0.5);\n      stroke(color);\n      \tcircle(x+rndX, y+rndY, sin(frameCount/fps) * orbitR);\n      \tstroke(0,0, 250);\n    \tstrokeWeight(3);\n    \tpoint(x+rndX, y+rndY);\n      }\n      \n      if (gen === 1) {\n    \tstrokeWeight(1);\n    \tstroke(color);\n    \tcircle(x+rndX, y+rndY, sin(frameCount/fps-HALF_PI) * orbitR);\n      } else if (gen === 2) {\n    \tstrokeWeight(0.75);\n    \tstroke(color);\n    \tcircle(x+rndX, y+rndY, cos(frameCount/fps-HALF_PI) * orbitR);\n      } else if (gen === 3) {\n      \tstrokeWeight(0.5);\n    \tstroke(color);\n      \tcircle(x+rndX, y+rndY, sin(frameCount/fps-HALF_PI) * orbitR);\n      }\n\n      return { x, y };\n }\n  \n function mouseMoved() {\n  \trandOffset = map(mouseX, 10, windowWidth, 0, radius/100);\n }"
+    },
+    {
+      "name": "2026-05-18-dots-everywhere",
+      "mod": "1779135452412",
+      "type": "sketch",
+      "code": "const steps = 100;\nlet size;\nlet fps;\nlet s;\n\nfunction setup() {\n\tcreateCanvas(windowWidth, windowHeight)\n\tsize = windowWidth/steps;\n\tfps=30;\n\tframeRate(fps);\n\ts=0\n}\nfunction draw() {\n\tbackground(0, 10);\n\tpush()\n\ttranslate(windowWidth/2, windowHeight/2);\n\tfor (let i=0;i<steps;i++){\n\t\tstroke(255);\n\t\tif (floor(frameCount % fps) === 0) {\n\t\t\tstrokeWeight(10);\n\t\t} else {\n\t\t\tstrokeWeight(3);\n\t\t}\n\t\tpoint(-windowWidth / 2 + i* size, 0 + random(-windowHeight/2,windowHeight/2));\n\t}\n\tpop();\n\tstrokeWeight(1);\n\tfill(255);\n\tcircle(s*size, windowHeight/2 + sin(frameCount)*10, 20+sin(frameCount)*10);\n\tfill(0);\n\tcircle(s*size, windowHeight/2 + cos(frameCount)*10, 20+sin(frameCount)*10);\n\ts++;\n\tif (s === steps) {\n\t\ts=0;\n\t}\n}\t\t"
+    },
+    {
+      "name": "2026-05-17-bubbles",
+      "mod": "1779038574330",
+      "type": "sketch",
+      "code": "let arrayLen = 100;\nlet arrayItems = [];\n\nfunction setup() {\n\tframeRate(30);\n\tcreateCanvas(windowWidth, windowHeight)\n\tfor(i=0;i<arrayLen;i++) {\n\t\tarrayItems.push(new FancyObject(\n\t\t\trandom(300, 900),\n\t\t\trandom(30, 120)));\n\t}\n}\n\nfunction draw() {\n\tbackground(0,5);\n\tarrayItems.forEach((item)=>\n\t{\n\t\tif (frameCount > item.delay) {\n\t\t\titem.update();\n\t\t\titem.draw();\n\t\t}\n\t});\n}\n\nclass FancyObject {\n\tconstructor(age, delay) {\n\t\tthis.reset(age, delay);\n\t}\n\t\n\treset(age, delay) {\n\t\tthis.maxAge = age;\n\t\tthis.age = 0;\n\t\tthis.delay = delay;\n\t\tthis.x = random(0, windowWidth);\n\t\tthis.y = random(0, windowHeight);\n\t\tthis.speed = random(1,5);\n\t\tthis.color = color(random(255), random(0), random(255));\n\t}\n\t\n\tupdate() {\n\t\tthis.r = map(this.age, 0, this.maxAge, 10, 250);\n\t\tthis.alpha = map(this.age, 0, this.maxAge, 250, 0);\n\t\tthis.color = color(red(this.color)*abs(sin(this.age/300))+random(10), green(this.color), blue(this.color)*abs(sin(this.age/100))+random(10));\n\t\tif (this.age >= this.maxAge){\n\t\t\tthis.reset(this.maxAge, 0);\n\t\t}\n\t\tthis.x-=(sin(frameCount/50) * 2) - this.speed;\n\t\tif (this.x - this.r / 2 > windowWidth) {\n\t\t\tthis.x = -this.r;\n\t\t}\n\t\tthis.y+=cos(frameCount/50) * 2;\n\t\tthis.age+=this.speed;\n\t}\n\t\n\tdraw() {\n\t\t\n\t\tnoStroke();\n\t\tlet c1 = color(red(this.color), green(this.color), blue(this.color), this.alpha)\n\t\tfill(c1);\n\t\tcircle(this.x, this.y, this.r);\n\t\t\n\t\tstroke(0, this.alpha);\n\t\tstrokeWeight(map(this.r, 10, 250, 1, 7));\n\t\tnoFill();\n\t\tlet xOuter = this.x + random(-2, 2);\n\t\tlet yOuter = this.y + random(-2, 2);\n\t\t//circle(xOuter, yOuter, this.r * abs(sin(this.age/100)));\n\t}\n}"
+    }
+  ],
+  "count": {
+    "sketches": 5,
+    "folders": 0
+  },
+  "settings": {
+    "doctype": "P5L_SETTINGS",
+    "date": "20260602141040",
+    "settings": {
+      "version": "1.8.1",
+      "revision": 61,
+      "welcome": false,
+      "autoCompile": false,
+      "compileTimer": 500,
+      "ecoRender": true,
+      "canvasCursor": true,
+      "console": true,
+      "consoleMode": "auto",
+      "fullscreenMode": false,
+      "fileName": "new_001",
+      "menuMode": false,
+      "menutab": true,
+      "exportCode": true,
+      "notifyToggle": true,
+      "tippyToggle": true,
+      "multitabToggle": true,
+      "timestampToggle": true,
+      "cocodingAutosaveToggle": true,
+      "cocodingFlagsToggle": false,
+      "checkupdates": true,
+      "debugMode": false,
+      "editMode": true,
+      "safeMode": false,
+      "shortcuts": {
+        "softcompile": {
+          "name": "SoftCompile",
+          "key": "ctrl+enter",
+          "callback": "recompileKey()"
+        },
+        "hardcompile": {
+          "name": "HardCompile",
+          "key": "ctrl+shift+enter",
+          "callback": "recompile(true)"
+        },
+        "editor": {
+          "name": "Editor",
+          "key": "ctrl+e",
+          "callback": "editorToggle()"
+        },
+        "menu": {
+          "name": "Menu",
+          "key": "ctrl+m",
+          "callback": "menuToggle()"
+        },
+        "settings": {
+          "name": "Settings",
+          "key": "ctrl+,",
+          "callback": "showSettings(true)"
+        },
+        "snippets": {
+          "name": "Snippets",
+          "key": "ctrl+shift+s",
+          "callback": "snippetsApplyToggle()"
+        },
+        "snippets_edit": {
+          "name": "Snippets Editor",
+          "key": "alt+shift+s",
+          "callback": "snippetsToggle()"
+        },
+        "references": {
+          "name": "References",
+          "key": "ctrl+r",
+          "callback": "toggleRef()"
+        },
+        "chalkboard": {
+          "name": "Chalkboard",
+          "key": "ctrl+b",
+          "callback": "toggleChalkboard()"
+        },
+        "autocompile": {
+          "name": "Live-Coding Toggle",
+          "key": "ctrl+a",
+          "callback": "autoCompileToggle()"
+        },
+        "newsketch": {
+          "name": "New Sketch",
+          "key": "ctrl+n",
+          "callback": "loadDefault()"
+        },
+        "clonesketch": {
+          "name": "Clone Sketch",
+          "key": "ctrl+shift+c",
+          "callback": "cloneSketch()"
+        },
+        "tidy": {
+          "name": "Tidy Code",
+          "key": "ctrl+t",
+          "callback": "tidyCode(editor)"
+        },
+        "codecomment": {
+          "name": "Comment Code",
+          "key": "meta+/",
+          "init": "editor.commands.bindKey(settings.shortcuts[\"codecomment\"].key, \"togglecomment\")"
+        },
+        "fontbigger": {
+          "name": "Increase Fontsize",
+          "key": "ctrl+=",
+          "callback": "fontSizeAdjust(0.25)"
+        },
+        "fontsmaller": {
+          "name": "Decrease Fontsize",
+          "key": "ctrl+-",
+          "callback": "fontSizeAdjust(- 0.25)"
+        },
+        "pause": {
+          "name": "Pause",
+          "key": "ctrl+p",
+          "callback": "pauseSketch()"
+        },
+        "snapshot": {
+          "name": "Export Snapshot",
+          "key": "ctrl+s",
+          "callback": "savePNG()"
+        },
+        "import": {
+          "name": "Import Sketch",
+          "key": "ctrl+o",
+          "callback": "importSketchesDialog()"
+        },
+        "jump": {
+          "name": "Quick Sketch Jump",
+          "key": "ctrl",
+          "init": "setupJumpSketches(settings.shortcuts[\"jump\"].key)",
+          "tippy": "Then combine w/ 1, 2,...0 to jump thru sketches"
+        },
+        "audio": {
+          "name": "Audio Snippet",
+          "key": "ctrl+shift+a",
+          "callback": "snippetsApplySelect('demo-audio');snippetsApply()",
+          "fixed": false
+        },
+        "osc": {
+          "name": "OSC Snippet",
+          "key": "ctrl+shift+o",
+          "callback": "snippetsApplySelect('demo-osc');snippetsApply()",
+          "fixed": false
+        },
+        "filter": {
+          "name": "Filter Sketches",
+          "key": "ctrl+shift+f",
+          "callback": "filterSketchesFocus()"
+        }
+      },
+      "editor": {
+        "fontSize": 15,
+        "keybinding": "keybinding",
+        "linenumbers": true,
+        "autocomplete": false,
+        "lockcode": true,
+        "passEditorKeys": false,
+        "recompilepulse": true
+      },
+      "snippets": {
+        "demo": {
+          "new": {
+            "gt": "",
+            "s": "",
+            "dt": "",
+            "db": "",
+            "gb": "",
+            "demo": "true"
+          },
+          "audio": {
+            "gt": "",
+            "s": "setupAudio(true) // global vars\n// a5.ease = .075 // set easing",
+            "dt": "/* audio vars: amp, ampEase, fft, fftEase, waveform, waveformEase */\nupdateAudio()",
+            "db": "",
+            "gb": "",
+            "demo": "true"
+          },
+          "font": {
+            "gt": "let font\n\nfunction preload() {\n\tfont = loadFont(\"includes/demos-data/fonts/RobotoMono-Regular.otf\")\n}",
+            "s": "textFont(font)",
+            "dt": "",
+            "db": "",
+            "gb": "",
+            "demo": "true"
+          },
+          "osc": {
+            "gt": "let libs = [\"includes/js/socket.io.js\"];\nlet socket;",
+            "s": "setupOsc('127.0.0.1', 12000, 12001); // oscHost, oscPortIn, oscPortOut",
+            "dt": "",
+            "db": "",
+            "gb": "\n// OSC LOGIC \nfunction receiveOsc(address, value) {\n\t// print('in: ' + address + ', ' +value)\n}\n\nfunction sendOsc(address, value) {\n\tif(socket != undefined) {\n\t\tsocket.emit('message', [address].concat(value));\n\t}\n}\n\nfunction setupOsc(oscHost, oscPortIn, oscPortOut) {\n\tsocket = io.connect('http://127.0.0.1:8082');\n\tsocket.on('connect', function() {\n\t\tsocket.emit('config', {\n\t\t\tserver: {\n\t\t\t\thost: oscHost,\n\t\t\t\tport: oscPortIn\n\t\t\t},\n\t\t\tclient: {\n\t\t\t\thost: oscHost,\n\t\t\t\tport: oscPortOut\n\t\t\t}\n\t\t});\n\t\tprint('OSC Ready!\\n' + oscHost + ', listen: ' + oscPortIn + ', send: ' + oscPortOut);\n\t});\n\tsocket.on('message', function(msg) {\n\t\treceiveOsc(msg[0], msg.splice(1));\n\t});\n}",
+            "demo": "true"
+          },
+          "midi": {
+            "gt": "",
+            "s": "// setup MIDI in/out by ID # or \"name\" (see console.log)\nsetupMidi(0, 0, true) // in, out, globalvars (if false use: midi5. )\n// midi5.debug = ['note', 'controlchange'] // send to console",
+            "dt": "/* vars: note, cc, notes[], ccs[], channels[], */\nupdateMidi()\n",
+            "db": "",
+            "gb": ""
+          }
+        },
+        "user": {}
+      },
+      "snippetsghostmode": {
+        "active": false,
+        "delay": 15
+      },
+      "sonicode": {
+        "mode": "sine",
+        "poly": 1,
+        "active": false,
+        "sonicodePoly": 0,
+        "base": 3
+      },
+      "statscount": 0,
+      "syncdata": {
+        "sketches": [],
+        "code": "",
+        "active": false,
+        "libs": [],
+        "cursor": {
+          "row": 0,
+          "column": 0
+        },
+        "console": [],
+        "namespace": "",
+        "cocodeadded": false
+      },
+      "cocoding": {
+        "active": false,
+        "timestamp": null,
+        "nick": "",
+        "namespace": "",
+        "lockdown": false,
+        "level": "",
+        "token": 0,
+        "sync": false,
+        "request": false,
+        "writemode": false,
+        "color": "#00aa00",
+        "cursor": {
+          "row": 0,
+          "column": 0
+        },
+        "msgID": -1,
+        "hasAdmin": false,
+        "error": false,
+        "code": ""
+      },
+      "scripts": [
+        "includes/p5/p5.min.js",
+        "includes/p5/addons/p5.sound.min.js"
+      ],
+      "theme": "ace/theme/gob",
+      "themeBG": "#00323FE0",
+      "themeBGactive": true,
+      "themeCOLORactive": true,
+      "themeCOLOR": "#B2F7DB",
+      "themeACTIVEactive": true,
+      "themeACTIVE": "#11EED830",
+      "refresh": false,
+      "chalkboard": {
+        "backgroundColor": "#00280A",
+        "backgroundOpacity": 0.75,
+        "strokeColor": "#ffffff",
+        "strokeWeight": 10,
+        "strokeOpacity": 1
+      },
+      "backup": {
+        "frequency": 2,
+        "last": 1780169512594
+      },
+      "indexDB": true,
+      "autocomplete": false,
+      "linenumbers": true,
+      "recompilepulse": true,
+      "lockcode": true,
+      "notifytoggle": true,
+      "tippytoggle": true,
+      "multitabtoggle": true,
+      "timestamptoggle": true,
+      "cocodingautosavetoggle": true,
+      "cocodingflagstoggle": false,
+      "passeditorkeys": false,
+      "snippetsghostmode.active": false,
+      "sonicode.active": false
+    }
+  }
+}
